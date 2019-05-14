@@ -119,7 +119,6 @@ Vue.component('scatter-chart', {
   },
   computed: {
     dataset1: function() {
-      console.log( this.data )
       return {
                 label: 'Term',
                 fill: false,
