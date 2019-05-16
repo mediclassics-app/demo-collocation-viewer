@@ -1,5 +1,5 @@
 api_endpoint = "//localhost:5000/api"
-
+// api_endpoint = "//localhost:5000/api"
 
 var default_param = {
   "corpus": 'Treat',
@@ -51,7 +51,7 @@ function toCoordinate( it ){
     return {
       'x': floatFormat( it[5]) ,                 // simple_ll
       'y': floatFormat( it[4] ),                 // t_score
-      'r': floatFormat( Math.sqrt(it[2]) )*4 ,  // sqrt( observed_value )
+      'r': floatFormat( Math.sqrt(it[2]) ) ,  // sqrt( observed_value )
       'label': it[0]
     }
 }
@@ -111,6 +111,10 @@ var chartoptions = {
     }
 }
 
+// var border_color_palette = ['#f87979', '#36a2eb', '#cc65fe', '#ffce56', '#92a8d1' ]
+var border_color_palette = ['#92a8d1', '#034f84', '#f7cac9', '#f7786b', '#deeaee', '#b1cbbb', '#eea29a', '#c94c4c', '#6b5b95', '#feb236', '#d64161', '#ff7b25', '#a2b9bc', '#b2ad7f', '#878f99', '#6b5b95']
+var background_color_palette = border_color_palette
+
 Vue.component('scatter-chart', {
   extends: VueChartJs.Bubble,
   props: ["data", "options"],
@@ -118,16 +122,22 @@ Vue.component('scatter-chart', {
     this.renderBubbleChart();
   },
   computed: {
-    dataset1: function() {
-      return {
-                label: 'Term',
-                fill: false,
-                borderColor: '#f87979',
-                backgroundColor: '#f87979',
-                data: this.data
-              }
-    }
+    datasets: function() {
+        if( !this.data ){ return }
+        console.log( this.data )
+        var class_labels = this.data.class_labels
+        return this.data.classificated_coor.map( function( v, i, arr ){
+            return {
+                'label': class_labels[i],
+                'fill': false,
+                'borderColor': border_color_palette[i],
+                'backgroundColor': background_color_palette[i],
+                'data': v,
+            }
+        })
+      }
   },
+
   data: function() {
     return {
         // coordinate1: this.coordinate1,
@@ -137,7 +147,7 @@ Vue.component('scatter-chart', {
   },
   methods: {
     renderBubbleChart: function() {
-          this.renderChart({ datasets: [ this.dataset1 ] }, this.options )
+          this.renderChart({ datasets: this.datasets  }, this.options )
       }
     },
     watch: {
@@ -161,16 +171,27 @@ var app = new Vue({
     'param': default_param,
     'result': {},
     'status': {
-        'sse_loading': false,
         'ajx_loading': false,
+        'sse_loading': false,
         'message': ""
     },
-    'data1': [{ x: -2,  y: 4 }, { x: -1, y: 1 }, { x: 0, y: 0 }, { x: 1, y: 1 }, { x: 2, y: 4 }],
     'coordinate': [],
     'chartoptions': chartoptions,
     'tabfocus': 'plot'
   },
   computed: {
+      data_class: function(){
+          if(!this.result.data){ return }
+          var dd = this.result.data
+          var class_labels = dd.map( (it)=> it[7] ).filter( (v,i,a) => a.indexOf(v)==i )
+          var classificated_data = class_labels.map( (c) => dd.filter( (v,i,a) => v[7] == c ) )
+          var classificated_coor = classificated_data.map( (it) => it.map( toCoordinate ) )
+          return {
+              'class_labels': class_labels,
+              'classificated_data': classificated_data,
+              'classificated_coor': classificated_coor
+          }
+      }
   },
   updated: function () {
       if( this.result.data ){
@@ -186,8 +207,45 @@ var app = new Vue({
       focusTab : function(tab_name){
           this.tabfocus = tab_name
       },
+
+      ajx_doit: function() {
+
+          console.log( "Method : ajx_doit" )
+          this.ajx_reset();
+          this.status.ajx_loading = true;
+          // var ajxUrl = api_endpoint + "/collocation?query=" + param2string( this.param )
+          // axios.get(ajxUrl)
+          axios({
+            method: 'post',
+            url: api_endpoint + "/analysis/collocation",
+            data: clone_param( this.param )
+          })
+          .then((response) => {
+              console.log( response.data )
+              this.result = response.data;
+              this.coordinate = this.result.data.map( toCoordinate )
+              this.status.ajx_loading = false;
+              this.focusTab('plot')
+          })
+          .catch((ex)=> {
+              console.log("ERR!!!!! : ", ex)
+              this.status.ajx_loading = false;
+          })
+
+      },
+
+      ajx_reset: function() {
+
+          console.log( "Method : ajx_reset" )
+          this.status.ajx_loading = false;
+          this.status.message = ""
+          this.result = {};
+
+      },
+
       sse_doit: function() {
           console.log( "Method : doit" )
+
           this.sse_reset();
           var streamUrl = api_endpoint + "/stream?query=" + param2string( this.param )
           // Not a real URL, just using for demo purposes
@@ -232,39 +290,6 @@ var app = new Vue({
           this.message = ""
       },
 
-      ajx_doit: function() {
 
-          console.log( "Method : ajx_doit" )
-          this.ajx_reset();
-          this.status.ajx_loading = true;
-          // var ajxUrl = api_endpoint + "/collocation?query=" + param2string( this.param )
-          // axios.get(ajxUrl)
-          axios({
-            method: 'post',
-            url: api_endpoint + "/analysis/collocation",
-            data: clone_param( this.param )
-          })
-          .then((response) => {
-              console.log( response.data )
-              this.result = response.data;
-              this.coordinate = this.result.data.map( toCoordinate )
-              this.status.ajx_loading = false;
-              this.focusTab('plot')
-          })
-          .catch((ex)=> {
-              console.log("ERR!!!!! : ", ex)
-              this.status.ajx_loading = false;
-          })
-
-      },
-
-      ajx_reset: function() {
-
-          console.log( "Method : ajx_reset" )
-          this.status.ajx_loading = false;
-          this.status.message = ""
-          this.result = {};
-
-      },
   }
 })

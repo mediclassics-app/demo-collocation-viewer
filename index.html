@@ -123,15 +123,20 @@
             <div class="row">
               <div class="col-md-3"></div>
               <div class="col-md-3"></div>
-              <div class="col-md-3">
+              <div class="col-md-3" v-show="false">
                 <button @click="sse_doit" type="submit" class="btn btn-info my-6">SSE Doit</button>
                 <button @click="sse_reset" type="submit" class="btn btn-info my-6">SSE Reset</button>
 
               </div>
               <div class="col-md-3">
-
-                <button @click="ajx_doit" type="submit" class="btn btn-info my-6">AJX Doit</button>
-                <button @click="ajx_reset" type="submit" class="btn btn-info my-6">AJX Reset</button>
+                <button class="btn btn-primary" type="button" @click="ajx_doit" :disabled='status.ajx_loading'>
+                  <span role="status" v-bind:class="{'spinner-grow spinner-grow-sm': status.ajx_loading,  }" aria-hidden="true"></span>
+                  AJX Doit
+                </button>
+                <button class="btn btn-secondary" type="button" @click="ajx_reset" :disabled='status.ajx_loading'>
+                  <span role="status" aria-hidden="true"></span>
+                  AJX Reset
+                </button>
               </div>
             </div>
 
@@ -154,7 +159,7 @@
             <div class="row" v-show="tabfocus=='plot'">
               <div class="col-md-12">
                   <scatter-chart ref="child1"
-                    :data="coordinate"
+                    :data="data_class"
                     :options="chartoptions">
                   </scatter-chart>
               </div>
