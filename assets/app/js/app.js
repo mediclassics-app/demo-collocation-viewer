@@ -1,5 +1,5 @@
-api_endpoint = "//localhost:5000/api"
 // api_endpoint = "//localhost:5000/api"
+api_endpoint = "//collocation.mediclassics.kr/api"
 
 var default_param = {
   "corpus": 'Treat',
