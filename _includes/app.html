@@ -1,0 +1,227 @@
+<div class="py-4" style="" id="app">
+
+    <div class="row">
+      <div class="col-12">
+        <h2>Mediclassics Analyzer <small>고문헌 정량 분석</small></h2>
+        <hr>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+          <h3>Parameter Settings</h3>
+        </div>
+
+        <div class="col-md-6">
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==0 }"  type="button" v-on:click="apply_param( 0 )">
+             example01
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==1 }"  type="button" v-on:click="apply_param( 1 )">
+             example02
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==2 }"  type="button" v-on:click="apply_param( 2 )">
+             example03
+          </button>
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="card">
+      <div class="card-header">
+        Target Term Setting
+      </div>
+      <div class="card-body">
+
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group"><label>MAIN Term</label><input type="text" class="form-control form-control-lg" name="search-MAIN" v-model="param.search_pattern.MAIN"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-6">
+              <div class="form-group"><label>Included Term</label><input type="text" class="form-control" name="search-AND" v-model="param.search_pattern.AND"></div>
+            </div>
+            <div class="col-md-6">
+              <div class="form-group"><label>Excluded Term</label><input type="text" class="form-control" name="search-NOT" v-model="param.search_pattern.NOT"></div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-3">
+              <div class="form-group"><label>Ngram Range Min</label><input type="number" class="form-control form-control-sm" name="ngram-range-min" v-model="param.ngram_range[0]" ></div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group"><label>Ngram Range Max</label><input type="number" class="form-control form-control-sm" name="ngram-range-max" v-model="param.ngram_range[1]"></div>
+            </div>
+
+            <div class="col-md-3">
+              <div class="form-group"><label>Half Window Size</label><input type="number" class="form-control form-control-sm" v-model="param.half_window_size"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group"><label>top n</label><input type="number" class="form-control form-control-sm" placeholder="100" name="top-n" v-model="param.top_n"></div>
+            </div>
+          </div>
+
+      </div> <!-- card body -->
+    </div>
+
+    <br>
+
+    <div class="card">
+      <div class="card-header">
+        Search Method Setting
+      </div>
+      <div class="card-body">
+
+        <form action="" class="form-group">
+        <label for="" class="col-sm-4 col-form-label">대상 텍스트</label>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Treat" v-model="param.corpus">
+          <label class="form-check-label" for="inlineRadio1">치료 텍스트</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="Raw" v-model="param.corpus">
+          <label class="form-check-label" for="inlineRadio1">전체 텍스트</label>
+        </div>
+        </form>
+
+        <form action="" class="form-group">
+        <label for="" class="col-sm-4 col-form-label">토큰 추출</label>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="DictSegmenter" v-model="param.model">
+          <label class="form-check-label" for="inlineRadio1">DictSegmenter</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="ScoreSegmenter" v-model="param.model">
+          <label class="form-check-label" for="inlineRadio1">ScoreSegmenter</label>
+        </div>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="NgramTokenizer" v-model="param.model">
+          <label class="form-check-label" for="inlineRadio1">NgramTokenizer</label>
+        </div>
+        </form>
+
+        <form action="" class="form-group">
+          <label for="" class="col-sm-4 col-form-label">Collocation Method </label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="t_score" v-model="param.collocation_method">
+            <label class="form-check-label" for="inlineRadio1">T-Score</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="simple_ll" v-model="param.collocation_method">
+            <label class="form-check-label" for="inlineRadio1">Simple-LL</label>
+          </div>
+        </form>
+
+      </div> <!-- card body -->
+
+    </div>
+
+
+  <br>
+
+
+  <div class="row">
+      <div class="col-6">
+        <h3>Result</h3>
+      </div>
+      <div class="col-md-3" v-show="false">
+        <button v-on:click="sse_doit" type="submit" class="btn btn-info my-6">SSE Doit</button>
+        <button v-on:click="sse_reset" type="submit" class="btn btn-info my-6">SSE Reset</button>
+
+      </div>
+
+      <div class="col-md-3">
+        <button class="btn btn-primary" type="button" v-on:click="ajx_doit" v-bind:disabled='status.ajx_loading'>
+          <span role="status" v-bind:class="{'spinner-grow spinner-grow-sm': status.ajx_loading,  }" aria-hidden="true"></span>
+          {% raw %}
+          {{ status.ajx_loading ? "Analyzing" : "Analyze" }}
+          {% endraw %}
+        </button>
+        <button class="btn btn-secondary" type="button" v-on:click="ajx_reset" v-bind:disabled='status.ajx_loading'>
+          <span role="status" aria-hidden="true"></span>
+           Reset
+        </button>
+      </div>
+  </div>
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link" v-bind:class="{ active: tabfocus=='plot' }" v-on:click="focusTab('plot')" >Plot</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" v-bind:class="{ active: tabfocus=='table' }" v-on:click="focusTab('table')" >Table</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" v-bind:class="{ active: tabfocus=='query' }" v-on:click="focusTab('query')" >Query</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="row" v-show="tabfocus=='plot'">
+      <div class="col-md-12">
+          <scatter-chart ref="child1"
+            :data="data_class"
+            :options="chartoptions">
+          </scatter-chart>
+      </div>
+    </div>
+
+
+    <div class="row" v-show="tabfocus=='table'">
+      <div class="col-md-12">
+
+          <table id="dtTable" class="table table-striped table-bordered table-sm" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th v-for="colname in result.columns">{% raw %}{{colname}}{% endraw %}</th>
+                    <!-- <th v-for="colname in result.columns" v-bind="colname"></th> -->
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="items in result.data">
+                    <!-- <th v-for="value in items" v-bind="value"></th> -->
+                    <th v-for="value in items" >{% raw %}{{value}}{% endraw %}</th>
+                </tr>
+            </tbody>
+          <!-- <tfoot>
+            <tr>
+                <th v-for="colname in result.columns">{% raw %}{{colname}}{% endraw %}</th>
+            </tr>
+          </tfoot> -->
+        </table>
+
+      </div>
+    </div>
+
+    <div class="row" v-show="tabfocus=='query'">
+      <div class="col-md-12">
+        <textarea class="form-control" rows="20">
+# USER PARAMS
+----------------
+corpus: {{param.corpus}}
+model: {{param.model}}
+search_pattern:
+MAIN: {{param.search_pattern.MAIN}}
+AND: {{param.search_pattern.AND}}
+NOT: {{param.search_pattern.NOT}}
+min_tf: {{ param.min_tf }}
+collocation_method: {{ param.collocation_method }}
+top_n: {{ param.top_n }}
+## options:
+half_window_size: {{ param.half_window_size }}
+ngram_range: [{{param.ngram_range[0]}},{{param.ngram_range[1]}}]
+--------------
+{{coordinate}}
+        </textarea>
+      </div>
+    </div>
+
+</div>

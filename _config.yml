@@ -1,0 +1,18 @@
+# General Jekyll Config
+highlighter: rouge
+url: http://info.mediclassics.kr/demo-collocation-viewer/
+lsi: false
+exclude: [ LICENSE, README.md, .gitignore, Gemfile, Gemfile.lock ]
+
+# Site Settings
+baseurl:            "/demo-collocation-viewer" # Base URL must end WITHOUT a slash, default: ""
+timezone:           Asia/Seoul # https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+
+# Build settings
+host: localhost
+port: 8384
+
+collections:
+  docs:
+    output: true
+    permalink: /:name

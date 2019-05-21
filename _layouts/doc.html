@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	  {% include head.meta.html %}
+    {% include bootstrap.css.html %}
+
+    {% include app.css.html %}
+    <title>{{ page.title }} | {{ site.data.theme.title }}</title>
+
+</head>
+<body>
+
+		<!-- Navigation -->
+		{% include body.navi.html %}
+
+			<br>
+	    <!-- Page Content -->
+	    <div class="container">
+					<div class="py-4" style="">
+
+					{{ content }}
+
+
+					</div>
+					<hr>
+			    <!-- Footer -->
+					{% include body.footer.html %}
+
+	    </div>
+
+    <!-- for bootstrap -->
+    {% include bootstrap.js.html %}
+
+
+</body>
+
+</html>

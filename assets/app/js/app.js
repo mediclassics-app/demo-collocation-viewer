@@ -1,7 +1,7 @@
 // api_endpoint = "//localhost:5000/api"
 api_endpoint = "//collocation.mediclassics.kr/api"
 
-var default_param = {
+var default_param1 = {
   "corpus": 'Treat',
   "model": 'DictSegmenter',
   "search_pattern": {
@@ -15,6 +15,38 @@ var default_param = {
   "half_window_size": 16,
   "ngram_range": [2,8]
 }
+
+var default_param2 = {
+  "corpus": 'Treat',
+  "model": 'DictSegmenter',
+  "search_pattern": {
+    'MAIN': "當歸",
+    'AND': "川芎|芎藭 地黃",
+    'NOT': ""
+  },
+  "min_tf": 5,
+  "collocation_method": 't_score',
+  "top_n": 100,
+  "half_window_size": 16,
+  "ngram_range": [2,8]
+}
+
+var default_param3 = {
+  "corpus": 'Raw',
+  "model": 'ScoreSegmenter',
+  "search_pattern": {
+    'MAIN': "瘀血|血瘀|蓄血|血蓄",
+    'AND': "",
+    'NOT': ""
+  },
+  "min_tf": 5,
+  "collocation_method": 't_score',
+  "top_n": 100,
+  "half_window_size": 16,
+  "ngram_range": [2,8]
+}
+
+var default_param = [default_param1, default_param2, default_param3]
 
 function clone_obj( src ) {
     return JSON.parse(JSON.stringify( src ))
@@ -168,7 +200,8 @@ var app = new Vue({
   //   ScatterChart
   // },
   data: {
-    'param': default_param,
+    'default_param_idx': 0,
+    'param': default_param[0],
     'result': {},
     'status': {
         'ajx_loading': false,
@@ -180,6 +213,7 @@ var app = new Vue({
     'tabfocus': 'plot'
   },
   computed: {
+
       data_class: function(){
           if(!this.result.data){ return }
           var dd = this.result.data
@@ -204,6 +238,12 @@ var app = new Vue({
       //   //console.log('updateComponentData', this.$refs)
       //     this.$refs.child1.open = true
       // },
+      //
+      apply_param: function( idx ){
+          this.default_param_idx = idx
+          this.param = default_param[ this.default_param_idx ]
+      },
+
       focusTab : function(tab_name){
           this.tabfocus = tab_name
       },

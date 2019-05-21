@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	  {% include head.meta.html %}
+    {% include bootstrap.css.html %}
+    {% include bootstrap.table.css.html %}
+    {% include app.css.html %}
+    <title>App | {{ site.data.theme.title }}</title>
+
+</head>
+<body>
+
+		<!-- Navigation -->
+		{% include body.navi.html %}
+
+			<br>
+	    <!-- Page Content -->
+	    <div class="container">
+
+
+					{{ content }}
+
+
+
+					<hr>
+			    <!-- Footer -->
+					{% include body.footer.html %}
+
+	    </div>
+
+    <!-- for bootstrap -->
+    {% include bootstrap.js.html %}
+    <!-- for table -->
+    {% include bootstrap.table.js.html %}
+
+    <!-- Vue -->
+    {% include vue.js.html %}
+    <!-- Vue-Chart -->
+    {% include vue.chart.html %}
+
+    <!-- app.js -->
+    {% include app.js.html %}
+
+</body>
+
+</html>
