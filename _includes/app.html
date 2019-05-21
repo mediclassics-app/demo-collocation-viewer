@@ -187,7 +187,7 @@
             </thead>
             <tbody>
                 <tr v-for="items in result.data">
-                    <!-- <th v-for="value in items" v-bind="value"></th> -->
+                    <!-- <th v-for="value in items" v-bind:value="value"></th> -->
                     <th v-for="value in items" >{% raw %}{{value}}{% endraw %}</th>
                 </tr>
             </tbody>
@@ -203,23 +203,7 @@
 
     <div class="row" v-show="tabfocus=='query'">
       <div class="col-md-12">
-        <textarea class="form-control" rows="20">
-# USER PARAMS
-----------------
-corpus: {{param.corpus}}
-model: {{param.model}}
-search_pattern:
-MAIN: {{param.search_pattern.MAIN}}
-AND: {{param.search_pattern.AND}}
-NOT: {{param.search_pattern.NOT}}
-min_tf: {{ param.min_tf }}
-collocation_method: {{ param.collocation_method }}
-top_n: {{ param.top_n }}
-## options:
-half_window_size: {{ param.half_window_size }}
-ngram_range: [{{param.ngram_range[0]}},{{param.ngram_range[1]}}]
---------------
-{{coordinate}}
+        <textarea class="form-control" rows="20" v-bind:value="param_str">
         </textarea>
       </div>
     </div>

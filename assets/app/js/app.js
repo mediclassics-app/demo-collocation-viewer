@@ -64,10 +64,6 @@ function clone_param( param ){
     return user_param
 }
 
-function param2string( param ){
-    return JSON.stringify( clone_param( param ) )
-}
-
 function floatFormat( num ){
     var q = 10 ** 3
     return Math.round( num * q)/ q
@@ -213,7 +209,12 @@ var app = new Vue({
     'tabfocus': 'plot'
   },
   computed: {
-
+      param_sanitized: function( k ){
+          return clone_param(this.param)
+      },
+      param_str: function(){
+          return JSON.stringify( this.param_sanitized, undefined, 4)
+      },
       data_class: function(){
           if(!this.result.data){ return }
           var dd = this.result.data
@@ -258,7 +259,7 @@ var app = new Vue({
           axios({
             method: 'post',
             url: api_endpoint + "/analysis/collocation",
-            data: clone_param( this.param )
+            data: this.param_sanitized
           })
           .then((response) => {
               console.log( response.data )
