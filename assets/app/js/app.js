@@ -18,7 +18,7 @@ var default_param1 = {
 
 var default_param2 = {
   "corpus": 'Treat',
-  "model": 'DictSegmenter',
+  "model": 'ScoreSegmenter',
   "search_pattern": {
     'MAIN': "當歸",
     'AND': "川芎|芎藭 地黃",
@@ -33,7 +33,7 @@ var default_param2 = {
 
 var default_param3 = {
   "corpus": 'Raw',
-  "model": 'ScoreSegmenter',
+  "model": 'NgramTokenizer',
   "search_pattern": {
     'MAIN': "瘀血|血瘀|蓄血|血蓄",
     'AND': "",
@@ -208,7 +208,7 @@ var app = new Vue({
         'sse_loading': false,
         'message': ""
     },
-    'coordinate': [],
+    // 'coordinate': [],
     'chartoptions': chartoptions,
     'tabfocus': 'plot'
   },
@@ -262,14 +262,25 @@ var app = new Vue({
           })
           .then((response) => {
               console.log( response.data )
-              this.result = response.data;
-              this.coordinate = this.result.data.map( toCoordinate )
               this.status.ajx_loading = false;
-              this.focusTab('plot')
+              if( response.data.STATUS != "fail"  ){
+
+                if ( response.data.RESULT === undefined || response.data.RESULT.length == 0) {
+                    alert( response.data.MESSAGE );
+                } else {
+                    this.result = response.data.RESULT;
+                    // this.coordinate = this.result.data.map( toCoordinate )
+                    this.focusTab('plot')
+                }
+              } else {
+                  alert( "There is no result" );
+              }
+
           })
           .catch((ex)=> {
-              console.log("ERR!!!!! : ", ex)
               this.status.ajx_loading = false;
+              alert( "Server does not response" );
+              console.log("ERR!!!!! : ", ex)
           })
 
       },
