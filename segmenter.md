@@ -1,5 +1,5 @@
 ---
-layout: app
+layout: segmenter
 ---
 
-{% include app.html %}
+{% include segmenter.html %}

@@ -90,7 +90,7 @@ function toCoordinate( it ){
 var evtSource = false;
 
 var app = new Vue({
-  el: '#app',
+  el: '#analyzer',
   // components: {
   //   ScatterChart
   // },

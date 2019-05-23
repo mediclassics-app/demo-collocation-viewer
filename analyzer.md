@@ -1,5 +1,5 @@
 ---
-layout: app
+layout: analyzer
 ---
 
-{% include app.html %}
+{% include analyzer.html %}

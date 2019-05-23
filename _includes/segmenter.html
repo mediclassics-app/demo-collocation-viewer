@@ -1,0 +1,103 @@
+<div class="py-4" style="" id="segmenter">
+
+    <div class="row">
+      <div class="col-12">
+        <h2>Mediclassics Segmenter <small>고문헌 정량 분석</small></h2>
+        <hr>
+      </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6">
+          <h3>Parameter Settings</h3>
+        </div>
+
+        <div class="col-md-6">
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==1 }"  type="button" v-on:click="apply_param( 1 )">
+             example01
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==2 }"  type="button" v-on:click="apply_param( 2 )">
+             example02
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==3 }"  type="button" v-on:click="apply_param( 3 )">
+             example03
+          </button>
+          <button class="btn btn-outline-info btn-sm" v-bind:class="{'activate': default_param_idx==0 }"  type="button" v-on:click="apply_param( 0 )">
+             reset
+          </button>
+        </div>
+
+    </div>
+
+    <br>
+
+    <div class="card">
+      <div class="card-header">
+        Target Term Setting
+      </div>
+      <div class="card-body">
+
+          <div class="row">
+            <div class="col-12">
+              <div class="form-group"><label>Target Text</label>
+                  <textarea type="text" rows="5" style="height:30%" class="form-control form-control-lg" name="target-text" v-model.trim="param.text">
+                  </textarea>
+              </div>
+            </div>
+          </div>
+
+        <div class="row">
+          <div class="col-md-2">
+            <div class="form-group"><label>Segment Model</label><input type="text" class="form-control form-control-sm" v-model.number="param.model"></div>
+          </div>
+            <div class="col-md-2">
+              <div class="form-group"><label>Ngram Range Min</label><input type="number" class="form-control form-control-sm" name="ngram-range-min" v-model.number="param.ngram_range[0]" disabled></div>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group"><label>Ngram Range Max</label><input type="number" class="form-control form-control-sm" name="ngram-range-max" v-model.number="param.ngram_range[1]" disabled></div>
+            </div>
+
+
+            <div class="col-md-3">
+              <div class="form-group"><label>Segment Markup(left)</label><input type="text" class="form-control form-control-sm" v-model.number="param.mark[0]"></div>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group"><label>Segment Markup(right)</label><input type="text" class="form-control form-control-sm" v-model.number="param.mark[1]"></div>
+            </div>
+          </div>
+
+      </div> <!-- card body -->
+    </div>
+    <br>
+
+
+  <div class="row">
+      <div class="col-6">
+        <h3>Result</h3>
+      </div>
+      <div class="col-md-3" v-show="false">
+      </div>
+
+      <div class="col-md-3">
+        <button class="btn btn-primary" type="button" v-on:click="ajx_doit" v-bind:disabled='status.ajx_loading'>
+          <span role="status" v-bind:class="{'spinner-grow spinner-grow-sm': status.ajx_loading,  }" aria-hidden="true"></span>
+          {% raw %}
+          {{ status.ajx_loading ? "Analyzing" : "Analyze" }}
+          {% endraw %}
+        </button>
+        <button class="btn btn-secondary" type="button" v-on:click="ajx_reset" v-bind:disabled='status.ajx_loading'>
+          <span role="status" aria-hidden="true"></span>
+           Reset
+        </button>
+      </div>
+  </div>
+
+
+    <div class="row">
+      <div class="col-md-12">
+        <textarea class="form-control" rows="20" v-bind:value="print_result">
+        </textarea>
+      </div>
+    </div>
+
+</div>
