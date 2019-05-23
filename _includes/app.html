@@ -13,14 +13,17 @@
         </div>
 
         <div class="col-md-6">
-          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==0 }"  type="button" v-on:click="apply_param( 0 )">
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==1 }"  type="button" v-on:click="apply_param( 1 )">
              example01
           </button>
-          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==1 }"  type="button" v-on:click="apply_param( 1 )">
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==2 }"  type="button" v-on:click="apply_param( 2 )">
              example02
           </button>
-          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==2 }"  type="button" v-on:click="apply_param( 2 )">
+          <button class="btn btn-outline-secondary btn-sm" v-bind:class="{'activate': default_param_idx==3 }"  type="button" v-on:click="apply_param( 3 )">
              example03
+          </button>
+          <button class="btn btn-outline-info btn-sm" v-bind:class="{'activate': default_param_idx==0 }"  type="button" v-on:click="apply_param( 0 )">
+             reset
           </button>
         </div>
 
