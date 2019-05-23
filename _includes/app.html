@@ -171,12 +171,32 @@
     <div class="row" v-show="tabfocus=='plot'">
       <div class="col-md-12">
           <scatter-chart ref="child1"
-            :data="data_class"
-            :options="chartoptions">
+            v-bind:data="data_class"
+            v-bind:options="chartoptions"
+            v-bind:style="chartstyle">
           </scatter-chart>
+
       </div>
     </div>
 
+    <!-- <div class="row" v-show="tabfocus=='plot'">
+      <div class="col-md-12">
+          <p>height: <span v-bind:value="chart.height"></span>{{chart.height}}%</p>
+          <button class="btn btn-outline-secondary btn-sm" type="button" v-on:click="apply_chart_style( 'height', 2 )">
+             height++
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" type="button" v-on:click="apply_chart_style( 'height', -2 )">
+             height--
+          </button>
+          <p>width: <span v-bind:value="chart.width"></span>%</p>
+          <button class="btn btn-outline-secondary btn-sm" type="button" v-on:click="apply_chart_style( 'width', 2 )">
+             width++
+          </button>
+          <button class="btn btn-outline-secondary btn-sm" type="button" v-on:click="apply_chart_style( 'width', -2 )">
+             width--
+          </button>
+      </div>
+    </div> -->
 
     <div class="row" v-show="tabfocus=='table'">
       <div class="col-md-12">

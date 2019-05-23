@@ -89,9 +89,6 @@ function toCoordinate( it ){
 
 var evtSource = false;
 
-
-
-
 var app = new Vue({
   el: '#app',
   // components: {
@@ -108,9 +105,22 @@ var app = new Vue({
     },
     // 'coordinate': [],
     'chartoptions': chartoptions,
+    'chart': {
+        height: 80,
+        width: 80
+    },
     'tabfocus': 'plot'
   },
   computed: {
+      chartstyle: function(){
+          return {
+              'width': this.chart.width.toString() + '%',
+              'height': this.chart.height.toString() + '%',
+              'display': 'block',
+              'margin-left': 'auto',
+              'margin-right': 'auto'
+          }
+      },
       param_sanitized: function( k ){
           return clone_param(this.param)
       },
@@ -141,7 +151,10 @@ var app = new Vue({
       //   //console.log('updateComponentData', this.$refs)
       //     this.$refs.child1.open = true
       // },
-      //
+      apply_chart_style: function( type, value ){
+          this.chart[ type ] += value
+          console.log( this.chart )
+      },
       apply_param: function( idx ){
           this.default_param_idx = idx
           this.param = get_param( this.default_param_idx )
