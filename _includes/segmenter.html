@@ -46,25 +46,24 @@
             </div>
           </div>
 
-        <div class="row">
-          <div class="col-md-2">
-            <div class="form-group"><label>Segment Model</label><input type="text" class="form-control form-control-sm" v-model.number="param.model"></div>
-          </div>
-            <div class="col-md-2">
-              <div class="form-group"><label>Ngram Range Min</label><input type="number" class="form-control form-control-sm" name="ngram-range-min" v-model.number="param.ngram_range[0]" disabled></div>
-            </div>
-            <div class="col-md-2">
-              <div class="form-group"><label>Ngram Range Max</label><input type="number" class="form-control form-control-sm" name="ngram-range-max" v-model.number="param.ngram_range[1]" disabled></div>
-            </div>
-
-
+          <div class="row">
             <div class="col-md-3">
-              <div class="form-group"><label>Segment Markup(left)</label><input type="text" class="form-control form-control-sm" v-model.number="param.mark[0]"></div>
+              <div class="form-group"><label>Segment Markup(left)</label><input type="text" class="form-control form-control-sm" v-model.number="param.mark[0]" v-bind:disabled="param.model == 'NgramTokenizer'"></div>
             </div>
             <div class="col-md-3">
-              <div class="form-group"><label>Segment Markup(right)</label><input type="text" class="form-control form-control-sm" v-model.number="param.mark[1]"></div>
+              <div class="form-group"><label>Segment Markup(right)</label><input type="text" class="form-control form-control-sm" v-model.number="param.mark[1]" v-bind:disabled="param.model == 'NgramTokenizer'"></div>
+            </div>
+            <div class="col-md-6">
+              <label>Segment Model</label>
+              <div class="btn-group-sm" role="group" aria-label="">
+                <button type="button" class="btn" v-bind:class="btnModelClass('DictSegmenter')" v-on:click="changeModel('DictSegmenter')" >DictSegmenter</button>
+                <button type="button" class="btn" v-bind:class="btnModelClass('ScoreSegmenter')" v-on:click="changeModel('ScoreSegmenter')">ScoreSegmenter</button>
+                <button type="button" class="btn" v-bind:class="btnModelClass('NgramTokenizer')" v-on:click="changeModel('NgramTokenizer')">NgramTokenizer</button>
+              </div>
+
             </div>
           </div>
+
 
       </div> <!-- card body -->
     </div>

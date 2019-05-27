@@ -53,6 +53,7 @@ var app = new Vue({
   },
   computed: {
       param_sanitized: function( k ){
+          console.log( this.param )
           return this.param
       },
       print_result: function( ){
@@ -60,7 +61,8 @@ var app = new Vue({
           if ( Object.keys( obj ).length === 0 && obj.constructor === Object ){
               return ""
           } else {
-              return JSON.stringify( obj, undefined, 4)
+              // return JSON.stringify( obj, undefined, 4)
+              return obj.flat(5).join(" ")
           }
       }
   },
@@ -71,14 +73,24 @@ var app = new Vue({
       //   //console.log('updateComponentData', this.$refs)
       //     this.$refs.child1.open = true
       // },
+      changeModel: function( modelname ){
+          this.param.model = modelname
+      },
+      btnModelClass: function( modelname ){
+          if( this.param.model==modelname ){
+              return 'btn-info'
+          } else {
+              return 'btn-light'
+          }
+      },
       apply_param: function( idx ){
           this.default_param_idx = idx
           this.param = get_param( this.default_param_idx )
       },
-
       ajx_doit: function() {
 
           console.log( "Method : ajx_doit" )
+          console.log( this.param )
           this.status.ajx_loading = true;
           // var ajxUrl = api_endpoint + "/collocation?query=" + param2string( this.param )
           // axios.get(ajxUrl)
