@@ -33,7 +33,7 @@
 
     <div class="card">
       <div class="card-header">
-        Target Term Setting
+        Target Text Setting
       </div>
       <div class="card-body">
 
@@ -45,6 +45,17 @@
               </div>
             </div>
           </div>
+
+        </div> <!-- card body -->
+      </div>
+
+    <br>
+
+      <div class="card">
+        <div class="card-header">
+          Method Setting
+        </div>
+        <div class="card-body">
 
           <div class="row">
             <div class="col-md-3">
@@ -81,7 +92,7 @@
         <button class="btn btn-primary" type="button" v-on:click="ajx_doit" v-bind:disabled='status.ajx_loading'>
           <span role="status" v-bind:class="{'spinner-grow spinner-grow-sm': status.ajx_loading,  }" aria-hidden="true"></span>
           {% raw %}
-          {{ status.ajx_loading ? "Analyzing" : "Analyze" }}
+          {{ status.ajx_loading ? "Segmenting" : "Segment" }}
           {% endraw %}
         </button>
         <button class="btn btn-secondary" type="button" v-on:click="ajx_reset" v-bind:disabled='status.ajx_loading'>
